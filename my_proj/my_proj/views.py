@@ -6,26 +6,23 @@ from django.views import View
 
 class GoogleCalendarInitView(View):
     def get(self, request):
-        # Setting variables for the OAuth process
-        client_id = settings.GOOGLE_CLIENT_ID
-        redirect_uri = settings.GOOGLE_REDIRECT_URI
+        cl_id = settings.GOOGLE_CLIENT_ID
+        redirect_url = settings.GOOGLE_REDIRECT_URI
         scope = 'https://www.googleapis.com/auth/calendar'
-        
-        # Redirecting the user
-        auth_url = f'https://accounts.google.com/o/oauth2/auth?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type=code'
-        return redirect(auth_url)
+        authorize_url = f'https://accounts.google.com/o/oauth2/auth?client_id={cl_id}&redirect_uri={redirect_uri}&scope={scope}&response_type=code'
+        return redirect(authorize_url)
 
 class GoogleCalendarRedirectView(View):
     def get(self, request):
         code = request.GET.get('code')
-        client_id = settings.GOOGLE_CLIENT_ID
+        cl_id = settings.GOOGLE_CLIENT_ID
         client_secret = settings.GOOGLE_CLIENT_SECRET
         redirect_uri = settings.GOOGLE_REDIRECT_URI
         grant_type = 'authorization_code'
         token_url = 'https://accounts.google.com/o/oauth2/token'
         data = {
             'code': code,
-            'client_id': client_id,
+            'client_id': cl_id,
             'client_secret': client_secret,
             'redirect_uri': redirect_uri,
             'grant_type': grant_type
